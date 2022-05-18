@@ -23,7 +23,6 @@ class ReversiFront(context: Context?, attrs: AttributeSet?): View(context, attrs
     private val color = Paint()
     var reversiConnector: ReversiConnector? = null
 
-
     init {
         loadBitmap()
     }
@@ -50,11 +49,16 @@ class ReversiFront(context: Context?, attrs: AttributeSet?): View(context, attrs
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event ?: return false
         when (event.action) {
-            MotionEvent.ACTION_UP -> {
+            MotionEvent.ACTION_DOWN -> {
                     val moveX = ((event.x - startX) / squareSize).toInt()
                     val moveY = 7 - ((event.y - startY) / squareSize).toInt()
                     reversiConnector?.moveFromPlayer(Square(moveX, moveY))
+                    findViewById<ReversiFront>(R.id.chess_view).invalidate()
                 }
+            MotionEvent.ACTION_UP -> {
+                reversiConnector?.moveFromAI()
+                findViewById<ReversiFront>(R.id.chess_view).invalidate()
+            }
             }
         return true
     }
